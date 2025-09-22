@@ -1,41 +1,20 @@
-const tasksInput = document.querySelector(".tasks__input");
-const tasksAdd = document.querySelector(".tasks__add");
-const tasksListContainer = document.querySelector(".tasks__list");
+const form = document.getElementById("tasks__form");
+const taskList = document.getElementById("tasks__list");
+const taskInput = document.getElementById("task__input");
 
-tasksInput.addEventListener("keyup", e => {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
-  tasksInput.value = tasksInput.value.trim();
-  if(e.keyCode == 13 && tasksInput.value !== "") {
-    tasksListContainer.innerHTML += `
-    <div class="task">
-      <div class="task__title">
-        ${tasksInput.value}
-      </div>
-      <a href="#" class="task__remove">&times;</a>
-    </div>
-    `;
-  tasksInput.value = ""
+  const task = `<div class="task">
+    <div class="task__title">${taskInput.value.trim()}</div>
+    <a href="#" class="task__remove">&times;</a>
+    </div>`;
+  if (!(taskInput.value.trim() === "")) {
+    taskList.insertAdjacentHTML("afterbegin", task);
+    e.target.reset();
+    const taskRemove = document.querySelector(".task");
+    taskRemove.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.target.parentElement.remove();
+    });
   }
-})
-
-tasksAdd.addEventListener("click", e => {
-  e.preventDefault();
-  tasksInput.value = tasksInput.value.trim();
-  if(tasksInput.value !== "") {
-    tasksListContainer.innerHTML += `
-    <div class="task">
-      <div class="task__title">
-        ${tasksInput.value}
-      </div>
-      <a href="#" class="task__remove">&times;</a>
-    </div>
-    `;
-  tasksInput.value = ""
-  }
-
-  Array.from(document.querySelectorAll(".task__remove")).forEach(elem => {
-    elem.addEventListener("click", () => {
-      elem.closest(".task").remove();
-    })
-  });
-})
+});
